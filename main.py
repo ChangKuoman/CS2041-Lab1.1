@@ -147,4 +147,25 @@ for i in matriz_datos:
         centro2 = i[3]
 print(f"Ejemplo:\nLa mayor distancia del centro educativo {centro1} es con el {centro2} y es {mayor_dist}.")
 
+# con input
 
+mayor_dist = 0
+cod_mod = input('Ingrese el cod_mod de la IE a analizar (ej: "0210435", "1222157"): ')
+centro1 = ""
+centro2 = ""
+k = 0
+
+for i, lista in enumerate(matriz_datos):
+    if lista[0] == cod_mod:
+        centro1 = lista[3]
+        k = i
+        break
+print(f"Colegio con cod_mod {cod_mod}: {centro1}")
+
+for i in matriz_datos:
+    d = distancia(float(matriz_datos[k][32]), float(i[32]), float(matriz_datos[k][33]), float(i[33]))
+    if d > mayor_dist:
+        mayor_dist = d
+        centro2 = i[3]
+
+print(f"El centro educativo mas lejano a {centro1} es: {centro2}, y estan separados por {mayor_dist} Km")
