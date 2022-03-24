@@ -1,35 +1,39 @@
-
-archivo1 = "Títulos registrados de Institutos de Educación Superior Tecnológicas^J Instituciones de Educación Superior 2019-2020.csv"
-
-dict = {}
-
 import csv
-with open(archivo1, newline='', encoding="utf-8") as csvfile:
-   next(csvfile)
-   spamreader = csv.reader(csvfile, delimiter=';', quotechar='|')
-   for row in spamreader:
-       if row[2] not in dict.keys():
-           dict[row[2]] = 1
-       else:
-           dict[row[2]] += 1
 
-matriz1_1 = []
-for i,j in dict.items():
-    matriz1_1.append([i, j])
+ruta1 = "Relación de instituciones y programas educativos.csv"
+ruta2 = "Títulos registrados de Institutos de Educación Superior Tecnológicas^J Instituciones de Educación Superior 2019-2020.csv"
 
-matriz1_1.sort(key = lambda x:x[1], reverse=True)
+# Preguntas del 1 - 4
 
+departamentos_dict = {}
+lista_paginas_web = []
+
+with open(ruta1, newline='', encoding="latin-1") as csv1:
+    # se salta el header
+    next(csv1)
+    # reader
+    reader = csv.reader(csv1, delimiter=',')
+    for row in reader:
+
+        # pregunta 1
+        if row[26] not in departamentos_dict.keys():
+            departamentos_dict[row[26]] = 1
+        else:
+            departamentos_dict[row[26]] += 1
+
+        # pregunta 2
+        if ".edu.pe" in row[16]:
+            lista_paginas_web.append([row[3], row[16]])
+
+
+# 1. Indique los 3 departamentos que cuentan con más locales educativos.
+cantidad_departamento = sorted(departamentos_dict.items(), key=lambda x: x[1], reverse=True)[0:3]
+print("Departamentos con más locales educativos:")
 for i in range(3):
-    print(f"Departamento: {matriz1_1[i][0]}. Cantidad: {matriz1_1[i][1]}")
+    print(f"({i+1}) Departamento: {cantidad_departamento[i][0]}. Cantidad: {cantidad_departamento[i][1]}")
 
 
-
-
-
-
-
-# print(data1.head())
-
-# data2 = pd.read_csv("Relación de instituciones y programas educativos.csv", encoding="latin-1")
-
-# print(data2.head())
+# 2. Liste aquellos centros educativos que cuenten con una página web y su dominio termine en ’.edu.pe’.
+print("Lista de centros educativos que cuentas con pagina web y dominio .edu.pe:")
+for i in lista_paginas_web:
+    print(f"Centro educativo: {i[0]}. Pagina web: {i[1]}")
