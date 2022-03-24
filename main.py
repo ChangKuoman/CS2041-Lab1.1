@@ -44,29 +44,11 @@ with open(ruta1, newline='', encoding="latin-1") as csv1:
         # pregunta 8
         matriz_datos.append(row)
 
-def distancia(lat1, lat2, long1, long2):
-
-    delta_lat = lat1 * pi / 180 - lat2 * pi / 180
-    delta_long = long1 * pi / 180 - long2 * pi / 180
-    prom_lat = (lat1 * pi / 180 + lat2 * pi / 180)/2.0
-    d = 6371.009 * sqrt(delta_lat ** 2 + (delta_long * cos(prom_lat)) ** 2)
-
-    return d
-
-mayor_dist = 0
-centro1 = matriz_datos[0][3]
-centro2 = ""
-
-for i in matriz_datos:
-    d = distancia(float(matriz_datos[0][32]), float(i[32]), float(matriz_datos[0][33]), float(i[33]))
-    if d > mayor_dist:
-        mayor_dist = d
-        centro2 = i[3]
-
-# problemas 5 - 7
+# problemas 5 - 8
 
 diccionario = {}
 centro_tit = {}
+cantidad_titulos_departamento = {}
 
 with open(ruta2, newline='', encoding="latin-1") as csv2:
     next(csv2)
@@ -82,9 +64,13 @@ with open(ruta2, newline='', encoding="latin-1") as csv2:
             centro_tit[row[10]] = 1
         else:
             centro_tit[row[10]] += 1
+        # problema 7
+        if row[2] not in cantidad_titulos_departamento.keys():
+            cantidad_titulos_departamento[row[2]] = 1
+        else :
+            cantidad_titulos_departamento[row[2]] += 1
 
 print("\n---PROBLEMA 1---\n")
-
 
 # 1. Indique los 3 departamentos que cuentan con más locales educativos.
 cantidad_departamento = sorted(departamentos_dict.items(), key=lambda x: x[1], reverse=True)[0:3]
@@ -124,16 +110,41 @@ print("\n---PROBLEMA 6---\n")
 
 # 6. ¿Que carrera tecnica es la mas demandada, es decir aquel que emitio mas tıtulos
 cantidad_titulos_carrera = sorted(centro_tit.items(), key=lambda x: x[1], reverse = True)[0:3]
-print("Carrera con mas titulos emitidos (mas demandada): ")
+print("Carrera con mas titulos emitidos (mas demandada) es: ")
 for i in range(1):
-    print(cantidad_titulos_carrera[i][0], ": ", cantidad_titulos_carrera[i][i+1])
+    print(f"{cantidad_titulos_carrera[i][0]} con {cantidad_titulos_carrera[i][i+1]} titulos emitidos.")
 csv2.close()
 
 print("\n---PROBLEMA 7---\n")
 
+# 7. Obtenga un resumen de la cantidad de titulos registrados por departamento.
+
+print("Cantidad de titulos registrados por departamento.")
+titulos_por_departamento = sorted(cantidad_titulos_departamento.items(), key=lambda x: x[1], reverse = True)[0:25]
+for i in range(25):
+    print(f"Departamento: {titulos_por_departamento[i][0]}. Cantidad: {titulos_por_departamento[i][1]}")
+
 print("\n---PROBLEMA 8---\n")
 
 # 8. ¿Es posible saber qué centros educativos están muy alejados uno del otro?
-print(f"Ejemplo:\nLa mayor distancia entre el centro educativo {centro1} y el {centro2} es {mayor_dist}.")
+def distancia(lat1, lat2, long1, long2):
+
+    delta_lat = lat1 * pi / 180 - lat2 * pi / 180
+    delta_long = long1 * pi / 180 - long2 * pi / 180
+    prom_lat = (lat1 * pi / 180 + lat2 * pi / 180)/2.0
+    d = 6371.009 * sqrt(delta_lat ** 2 + (delta_long * cos(prom_lat)) ** 2)
+
+    return d
+
+mayor_dist = 0
+centro1 = matriz_datos[0][3]
+centro2 = ""
+
+for i in matriz_datos:
+    d = distancia(float(matriz_datos[0][32]), float(i[32]), float(matriz_datos[0][33]), float(i[33]))
+    if d > mayor_dist:
+        mayor_dist = d
+        centro2 = i[3]
+print(f"Ejemplo:\nLa mayor distancia del centro educativo {centro1} es con el {centro2} y es {mayor_dist}.")
 
 
