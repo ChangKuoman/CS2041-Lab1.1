@@ -93,3 +93,40 @@ print("\n-----\n")
 
 # 8. ¿Es posible saber qué centros educativos están muy alejados uno del otro?
 print(f"Ejemplo:\nLa mayor distancia entre el centro educativo {centro1} y el {centro2} es {mayor_dist}.")
+
+print("\n-----\n")
+
+# 5. ¿Quién es el director que emitió más títulos y desde qué centro educativo?
+diccionario = {}
+with open(ruta2, newline='', encoding="latin-1") as csv2:
+    next(csv2)
+    reader = csv.reader(csv2, delimiter=';')
+    for row in reader:
+        if row[1] not in diccionario.keys():
+            diccionario[row[1]] = 1
+        else:
+            diccionario[row[1]] += 1
+total = sorted(diccionario.items(), key=lambda x: x[1], reverse=True)[0:3]
+for i in range(3):
+    print(f"({i+1}) Nombre de la Institucion: {total[i][0]}. Cantidad: {total[i][1]}")
+print("El director que emitio mas titulos es BELTRAN DAVILA ADOLFO ENRIQUE en la institucion de FORMACION BANCARIA IFB")
+
+print("\n-----\n")
+
+# 6. ¿Que carrera tecnica es la mas demandada, es decir aquel que emitio mas tıtulos
+centro_tit = {}
+with open(ruta2, newline = '', encoding="latin-1") as csv2:
+    #saltar el header
+    next(csv2)
+    #reader
+    reader2 = csv.reader(csv2, delimiter=';')
+    for row in reader2:
+        if row[10] not in centro_tit.keys():
+            centro_tit[row[10]] = 1
+        else:
+            centro_tit[row[10]] += 1
+cantidad_titulos_carrera = sorted(centro_tit.items(), key=lambda x: x[1], reverse = True)[0:3]
+print("Carrera con mas titulos emitidos (mas demandada): ")
+for i in range(1):
+    print(cantidad_titulos_carrera[i][0], ": ", cantidad_titulos_carrera[i][i+1])
+csv2.close()
