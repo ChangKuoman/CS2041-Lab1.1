@@ -4,7 +4,7 @@ from math import pi, cos, sqrt
 ruta1 = "Relación de instituciones y programas educativos.csv"
 ruta2 = "Títulos registrados de Institutos de Educación Superior Tecnológicas^J Instituciones de Educación Superior 2019-2020.csv"
 
-# Preguntas del 1 - 4
+# Preguntas del 1 - 4 y 8
 
 departamentos_dict = {}
 lista_paginas_web = []
@@ -63,70 +63,77 @@ for i in matriz_datos:
         mayor_dist = d
         centro2 = i[3]
 
+# problemas 5 - 7
+
+diccionario = {}
+centro_tit = {}
+
+with open(ruta2, newline='', encoding="latin-1") as csv2:
+    next(csv2)
+    reader = csv.reader(csv2, delimiter=';')
+    for row in reader:
+        # problema 5
+        if row[1] not in diccionario.keys():
+            diccionario[row[1]] = 1
+        else:
+            diccionario[row[1]] += 1
+        # problema 6
+        if row[10] not in centro_tit.keys():
+            centro_tit[row[10]] = 1
+        else:
+            centro_tit[row[10]] += 1
+
+print("\n---PROBLEMA 1---\n")
+
+
 # 1. Indique los 3 departamentos que cuentan con más locales educativos.
 cantidad_departamento = sorted(departamentos_dict.items(), key=lambda x: x[1], reverse=True)[0:3]
 print("Departamentos con más locales educativos:")
 for i in range(3):
     print(f"({i+1}) Departamento: {cantidad_departamento[i][0]}. Cantidad: {cantidad_departamento[i][1]}")
 
-print("\n-----\n")
+print("\n---PROBLEMA 2---\n")
 
 # 2. Liste aquellos centros educativos que cuenten con una página web y su dominio termine en ’.edu.pe’.
 print("Lista de centros educativos que cuentas con pagina web y dominio .edu.pe:")
 for i in lista_paginas_web:
     print(f"Centro educativo: {i[0]}. Pagina web: {i[1]}")
 
-print("\n-----\n")
+print("\n---PROBLEMA 3---\n")
 
 # 3 Identifique aquellos centros educativos que permitan solo mujeres, donde el turno sea de noche y no esten inhabilitados.
 print("Centros educativos que permitan solo mujeres, donde el turno sea de noche y no esten inhabilitados.")
 for i in lista_centros:
     print(f"Centro educativo: {i}")
 
-print("\n-----\n")
+print("\n---PROBLEMA 4---\n")
 
 # 4. ¿En qué año se crearon más centros educativos?
 anho_mas_centros = sorted(fechas_dict.items(), key=lambda x: x[1], reverse=True)[0]
 print(f"El anho con mas centros educativos fue {anho_mas_centros[0]} con {anho_mas_centros[1]} creados.")
 
-print("\n-----\n")
-
-# 8. ¿Es posible saber qué centros educativos están muy alejados uno del otro?
-print(f"Ejemplo:\nLa mayor distancia entre el centro educativo {centro1} y el {centro2} es {mayor_dist}.")
-
-print("\n-----\n")
+print("\n---PROBLEMA 5---\n")
 
 # 5. ¿Quién es el director que emitió más títulos y desde qué centro educativo?
-diccionario = {}
-with open(ruta2, newline='', encoding="latin-1") as csv2:
-    next(csv2)
-    reader = csv.reader(csv2, delimiter=';')
-    for row in reader:
-        if row[1] not in diccionario.keys():
-            diccionario[row[1]] = 1
-        else:
-            diccionario[row[1]] += 1
 total = sorted(diccionario.items(), key=lambda x: x[1], reverse=True)[0:3]
 for i in range(3):
     print(f"({i+1}) Nombre de la Institucion: {total[i][0]}. Cantidad: {total[i][1]}")
 print("El director que emitio mas titulos es BELTRAN DAVILA ADOLFO ENRIQUE en la institucion de FORMACION BANCARIA IFB")
 
-print("\n-----\n")
+print("\n---PROBLEMA 6---\n")
 
 # 6. ¿Que carrera tecnica es la mas demandada, es decir aquel que emitio mas tıtulos
-centro_tit = {}
-with open(ruta2, newline = '', encoding="latin-1") as csv2:
-    #saltar el header
-    next(csv2)
-    #reader
-    reader2 = csv.reader(csv2, delimiter=';')
-    for row in reader2:
-        if row[10] not in centro_tit.keys():
-            centro_tit[row[10]] = 1
-        else:
-            centro_tit[row[10]] += 1
 cantidad_titulos_carrera = sorted(centro_tit.items(), key=lambda x: x[1], reverse = True)[0:3]
 print("Carrera con mas titulos emitidos (mas demandada): ")
 for i in range(1):
     print(cantidad_titulos_carrera[i][0], ": ", cantidad_titulos_carrera[i][i+1])
 csv2.close()
+
+print("\n---PROBLEMA 7---\n")
+
+print("\n---PROBLEMA 8---\n")
+
+# 8. ¿Es posible saber qué centros educativos están muy alejados uno del otro?
+print(f"Ejemplo:\nLa mayor distancia entre el centro educativo {centro1} y el {centro2} es {mayor_dist}.")
+
+
