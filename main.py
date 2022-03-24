@@ -104,7 +104,19 @@ print("\n---PROBLEMA 5---\n")
 total = sorted(diccionario.items(), key=lambda x: x[1], reverse=True)[0:3]
 for i in range(3):
     print(f"({i+1}) Nombre de la Institucion: {total[i][0]}. Cantidad: {total[i][1]}")
-print("El director que emitio mas titulos es BELTRAN DAVILA ADOLFO ENRIQUE en la institucion de FORMACION BANCARIA IFB")
+
+nombre={}
+with open(ruta1, newline='', encoding="latin-1") as csv1:
+    # se salta el header
+    next(csv1)
+    # reader
+    reader = csv.reader(csv1, delimiter=',')
+    for row in reader:
+        if row[3] == total[0][0]:
+            nombre_director = row[13]
+            break
+
+print(f"El director que emitio mas titulos es {nombre_director} en la institucion de {total[0][0]}")
 
 print("\n---PROBLEMA 6---\n")
 
@@ -147,7 +159,7 @@ for i in matriz_datos:
         centro2 = i[3]
 print(f"Ejemplo:\nLa mayor distancia del centro educativo {centro1} es con el {centro2} y es {mayor_dist}.")
 
-# con input
+# problema 8 con input
 
 mayor_dist = 0
 cod_mod = input('Ingrese el cod_mod de la IE a analizar (ej: "0210435", "1222157"): ')
